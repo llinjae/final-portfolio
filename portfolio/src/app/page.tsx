@@ -1,30 +1,30 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { css } from "@emotion/react";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { css, keyframes } from "@emotion/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const FullScreenGradient = css`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(
-    209.64% 186.34% at 176.13% 51.41%,
-    #030c28 0%,
-    #263e89 100%
-  );
-  color: white;
-  flex-direction: column;
-  gap: 20px;
-`;
+// const fadeOut = keyframes`
+//   from {
+//     width: 100vw;
+//   }
+//   to {
+//     width: 100%;
+//   }
+// `;
 
-const LoginContainer = css`
+const LoginContainer = () => css`
   width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
+  background: radial-gradient(
+    209.64% 186.34% at 176.13% 51.41%,
+    #030c28 0%,
+    #263e89 100vw
+  );
 `;
 
 const LogoBox = css`
@@ -37,15 +37,20 @@ const LogoBox = css`
   background: radial-gradient(
     209.64% 186.34% at 176.13% 51.41%,
     #030c28 0%,
-    #263e89 100%
+    #263e89 100vw
   );
   padding-right: 70px;
   color: white;
 
   span {
     white-space: pre-line;
-    text-align: right;
-    font-size: 14px;
+    font-weight: bold;
+    
+    &:first-child {
+      font-size: 40px;
+      text-align: right;
+      transform: rotate(-90deg);
+    }
   }
 `;
 
@@ -69,7 +74,6 @@ const LoginBox = css`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-bottom: 20px;
 `;
 
 const InputBox = css`
@@ -113,58 +117,148 @@ interface IFORM {
 
 const LoginPage = () => {
   const [input, setInput] = useState<IFORM>({ email: "", password: "" });
-  const [showLoginPage, setShowLoginPage] = useState(false);
+  const [autoLoginStarted, setAutoLoginStarted] = useState(false);
+  const [text, setText] = useState("I want to know about you!!");
+  const [showText, setShowText] = useState(true);
+  const router = useRouter();
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
+  useEffect(() => {
+    setTimeout(() => {
+      setShowText(false);
+    }, 2000);
+
+    setTimeout(() => {
+      setText("Hey, Injae! Auto login please!");
+      setShowText(true);
+    }, 3000);
+
+    setTimeout(() => {
+      setAutoLoginStarted(true);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    setAutoLoginStarted(true);
+ 
+    setTimeout(() => {
+      setInput({ ...input, email: "l", password: "" });
+    }, 4100);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "le", password: "" });
+    }, 4200);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "lee", password: "" });
+    }, 4300);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leei", password: "" });
+    }, 4400);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leein", password: "" });
+    }, 4500);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinj", password: "" });
+    }, 4600);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinja", password: "" });
+    }, 4700);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "" });
+    }, 4800);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "1" });
+    }, 5000);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "12" });
+    }, 5100);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "123" });
+    }, 5200);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "1234" });
+    }, 5300);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "12345" });
+    }, 5400);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "123456" });
+    }, 5500);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "1234567" });
+    }, 5600);
+
+    setTimeout(() => {
+      setInput({ ...input, email: "leeinjae", password: "12345678" });
+    }, 5700);
+
+    setTimeout(() => {
+      handleLogin();
+    }, 7000);
+  }, []);
+
+  const handleLogin = () => {
+    // router.push("/MainPage");
   };
-
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!input.email || !input.password) {
-      return;
-    }
-  };
-
-  const toggleView = () => setShowLoginPage(!showLoginPage);
-
-  if (!showLoginPage) {
-    return (
-      <div css={FullScreenGradient}>
-        <h2>Welcome</h2>
-        <button onClick={() => setShowLoginPage(true)}>Enter Site</button>
-      </div>
-    );
-  }
 
   return (
     <div css={[LoginContainer]}>
-      <div css={[LogoBox]}>
-        <span>하하하하</span>
+      <div css={LogoBox}>
+        <AnimatePresence>
+            {showText && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <span>{text}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
       </div>
-      <form css={[LoginFormBox]}>
-        <h1>로그인</h1>
-        <div css={[LoginBox]}>
-          <div css={[InputBox]}>
-            <input
-              css={[InputContainer(false)]}
-              placeholder="아이디 입력"
-              name="email"
-              type="text"
-            />
-            <input
-              css={[InputContainer(false)]}
-              placeholder="패스워드 입력"
-              name="password"
-              type="password"
-            />
-          </div>
-          <button css={[LoginButton]} type="submit">
-            로그인
-          </button>
-        </div>
+      <form css={LoginFormBox}>
+        <AnimatePresence>
+          <motion.div 
+            css={LoginBox}         
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            transition={{ delay: 3.5, duration: 2 }}
+          >
+            <div css={InputBox}>
+              <input
+                css={InputContainer(false)}
+                placeholder="아이디 입력"
+                value={input.email}
+                onChange={(e) => setInput({ ...input, email: e.target.value })}
+                type="text"
+              />
+              <input
+                css={InputContainer(false)}
+                placeholder="패스워드 입력"
+                value={input.password}
+                onChange={(e) => setInput({ ...input, password: e.target.value })}
+                type="password"
+              />
+            </div>
+            <button css={LoginButton} type="submit">
+              로그인
+            </button>
+          </motion.div>
+        </AnimatePresence>
       </form>
     </div>
   );

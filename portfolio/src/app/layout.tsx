@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Pretendard } from "../../public/\bfonts";
+import { Pretendard } from "../../public/fonts";
 
 interface LayoutProps {
   children: React.ReactNode;
