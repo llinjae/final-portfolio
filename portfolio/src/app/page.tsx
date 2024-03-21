@@ -5,6 +5,7 @@ import { css, keyframes } from "@emotion/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import PathMotion from "./components/PathMotion";
 
 // const fadeOut = keyframes`
 //   from {
@@ -15,11 +16,13 @@ import { useEffect, useState } from "react";
 //   }
 // `;
 
-const LoginContainer = () => css`
+const LoginContainer = (isAuto: boolean) => css`
   width: 100vw;
   height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  display: ${isAuto ? "grid" : "flex"};
+  grid-template-columns: ${isAuto ? "1fr 1.2fr" : ""};
+  justify-content: ${!isAuto ? "center" : ""};
+  align-items: ${!isAuto ? "center" : ""};
   background: radial-gradient(
     209.64% 186.34% at 176.13% 51.41%,
     #030c28 0%,
@@ -51,6 +54,18 @@ const LogoBox = css`
       text-align: right;
       transform: rotate(-90deg);
     }
+  }
+`;
+
+const IntroBox = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: #d6d3e1;
+    font-size: 30px;
   }
 `;
 
@@ -125,12 +140,12 @@ const LoginPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setShowText(false);
-    }, 2000);
+    }, 4000);
 
     setTimeout(() => {
       setText("Hey, Injae! Auto login please!");
       setShowText(true);
-    }, 3000);
+    }, 5000);
 
     setTimeout(() => {
       setAutoLoginStarted(true);
@@ -138,131 +153,180 @@ const LoginPage = () => {
   }, []);
 
   useEffect(() => {
-    setAutoLoginStarted(true);
- 
     setTimeout(() => {
       setInput({ ...input, email: "l", password: "" });
-    }, 4100);
+    }, 6500);
 
     setTimeout(() => {
       setInput({ ...input, email: "le", password: "" });
-    }, 4200);
+    }, 6600);
 
     setTimeout(() => {
       setInput({ ...input, email: "lee", password: "" });
-    }, 4300);
+    }, 6700);
 
     setTimeout(() => {
       setInput({ ...input, email: "leei", password: "" });
-    }, 4400);
+    }, 6800);
 
     setTimeout(() => {
       setInput({ ...input, email: "leein", password: "" });
-    }, 4500);
+    }, 6900);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinj", password: "" });
-    }, 4600);
+    }, 7000);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinja", password: "" });
-    }, 4700);
+    }, 7100);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "" });
-    }, 4800);
+    }, 7200);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "1" });
-    }, 5000);
+    }, 8000);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "12" });
-    }, 5100);
+    }, 8100);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "123" });
-    }, 5200);
+    }, 8200);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "1234" });
-    }, 5300);
+    }, 8300);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "12345" });
-    }, 5400);
+    }, 8400);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "123456" });
-    }, 5500);
+    }, 8500);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "1234567" });
-    }, 5600);
+    }, 8600);
 
     setTimeout(() => {
       setInput({ ...input, email: "leeinjae", password: "12345678" });
-    }, 5700);
+    }, 8700);
 
     setTimeout(() => {
       handleLogin();
-    }, 7000);
+    }, 9500);
   }, []);
 
+  const IntroText = () => {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <span>Hey, there!</span>
+        <span>Welcome to my portfolio!</span>
+      </motion.div>
+    );
+  }
+
   const handleLogin = () => {
-    // router.push("/MainPage");
+    router.push("/MainPage");
   };
 
+  const introPage = () => {
+    return (
+      <motion.div
+        css ={[IntroBox]}
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <PathMotion />
+        <motion.span
+          initial={{ opacity: 0, y: 50  }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 1 }}
+          style={{ marginTop: "30px"}}
+        >
+          Hey, there!
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0, y: 100  }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 1.5 }}
+        >
+          Welcome to my portfolio!
+        </motion.span>
+      </motion.div>
+    )
+  }
+
   return (
-    <div css={[LoginContainer]}>
-      <div css={LogoBox}>
-        <AnimatePresence>
-            {showText && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
+    <div css={[LoginContainer(autoLoginStarted)]}>
+      {autoLoginStarted ? (
+        <>
+          <div css={LogoBox}>
+            <AnimatePresence>
+                {showText && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                  >
+                    <span>{text}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+          </div>
+          <form css={LoginFormBox}>
+            <AnimatePresence>
+              <motion.div 
+                css={LoginBox}         
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ delay: 3.5, duration: 2 }}
               >
-                <span>{text}</span>
+                <div css={InputBox}>
+                  <input
+                    css={InputContainer(false)}
+                    placeholder="아이디 입력"
+                    value={input.email}
+                    onChange={(e) => setInput({ ...input, email: e.target.value })}
+                    type="text"
+                  />
+                  <input
+                    css={InputContainer(false)}
+                    placeholder="패스워드 입력"
+                    value={input.password}
+                    onChange={(e) => setInput({ ...input, password: e.target.value })}
+                    type="password"
+                  />
+                </div>
+                <button css={LoginButton} type="submit">
+                  로그인
+                </button>
               </motion.div>
-            )}
-          </AnimatePresence>
-      </div>
-      <form css={LoginFormBox}>
-        <AnimatePresence>
-          <motion.div 
-            css={LoginBox}         
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
-            transition={{ delay: 3.5, duration: 2 }}
-          >
-            <div css={InputBox}>
-              <input
-                css={InputContainer(false)}
-                placeholder="아이디 입력"
-                value={input.email}
-                onChange={(e) => setInput({ ...input, email: e.target.value })}
-                type="text"
-              />
-              <input
-                css={InputContainer(false)}
-                placeholder="패스워드 입력"
-                value={input.password}
-                onChange={(e) => setInput({ ...input, password: e.target.value })}
-                type="password"
-              />
-            </div>
-            <button css={LoginButton} type="submit">
-              로그인
-            </button>
-          </motion.div>
-        </AnimatePresence>
-      </form>
+            </AnimatePresence>
+          </form>
+        </>
+      ) : (
+        introPage()
+      )}
+     
     </div>
   );
 };
 
 export default LoginPage;
-

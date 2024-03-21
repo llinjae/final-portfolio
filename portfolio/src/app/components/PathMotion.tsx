@@ -1,5 +1,27 @@
+/** @jsxImportSource @emotion/react */
+
 import * as React from "react";
 import { motion } from "framer-motion";
+import { css } from "@emotion/react";
+
+const PathMotionContainer = css`
+  width: 150px;
+  height: 150px;
+  display: flex;
+  place-content: center;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+`;
+
+const PathMotionSvg = css`
+  width: 56%;
+  overflow: visible;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+`;
 
 const icon = {
   hidden: {
@@ -15,11 +37,11 @@ const icon = {
 };
 
 const PathMotion = () => (
-  <div className="container">
+  <div css={[PathMotionContainer]}>
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
-      className="item"
+      css={[PathMotionSvg]}
     >
       <motion.path
         d="M0 100V0l50 50 50-50v100L75 75l-25 25-25-25z"
